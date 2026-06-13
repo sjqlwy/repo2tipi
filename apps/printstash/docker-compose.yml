@@ -1,0 +1,103 @@
+services:
+  printstash:
+    image: frontend:latest
+    container_name: printstash
+    restart: unless-stopped
+    environment:
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://api:8000}
+      - NEXT_PUBLIC_WS_URL=${NEXT_PUBLIC_WS_URL:-ws://localhost:8000}
+    depends_on:
+      printstash-api:
+        condition: service_healthy
+    x-runtipi:
+      is_main: true
+      internal_port: 3000
+  printstash-api:
+    image: api:latest
+    container_name: printstash-api
+    restart: unless-stopped
+    volumes:
+      - ${APP_DATA_DIR}/data/printstash_data:/data/files
+      - ${APP_DATA_DIR}/data/printstash_thumbs:/data/thumbs
+      - ${APP_DATA_DIR}/data/printstash_db:/data/db
+      - ${APP_DATA_DIR}/data/printstash_staging:/data/staging
+      - ${APP_DATA_DIR}/data/printstash_backups:/data/backups
+    environment:
+      - VAULT_STORAGE_BACKEND=${VAULT_STORAGE_BACKEND:-local}
+      - VAULT_DATA_DIR=${VAULT_DATA_DIR:-/data/files}
+      - VAULT_THUMB_DIR=${VAULT_THUMB_DIR:-/data/thumbs}
+      - VAULT_STAGING_DIR=${VAULT_STAGING_DIR:-/data/staging}
+      - VAULT_DB_URL=${VAULT_DB_URL:-sqlite:////data/db/printstash.sqlite}
+      - VAULT_BACKUP_DIR=${VAULT_BACKUP_DIR:-/data/backups}
+      - VAULT_BACKUP_RETENTION_DAYS=${VAULT_BACKUP_RETENTION_DAYS:-30}
+      - VAULT_BACKUP_S3_BUCKET=${VAULT_BACKUP_S3_BUCKET:-latest}
+      - VAULT_BACKUP_S3_ENDPOINT_URL=${VAULT_BACKUP_S3_ENDPOINT_URL:-latest}
+      - VAULT_BACKUP_S3_REGION=${VAULT_BACKUP_S3_REGION:-auto}
+      - VAULT_BACKUP_S3_ACCESS_KEY=${VAULT_BACKUP_S3_ACCESS_KEY:-latest}
+      - VAULT_BACKUP_S3_SECRET_KEY=${VAULT_BACKUP_S3_SECRET_KEY:-latest}
+      - VAULT_S3_BUCKET=${VAULT_S3_BUCKET:-latest}
+      - VAULT_S3_ENDPOINT_URL=${VAULT_S3_ENDPOINT_URL:-latest}
+      - VAULT_S3_REGION=${VAULT_S3_REGION:-auto}
+      - VAULT_S3_ACCESS_KEY=${VAULT_S3_ACCESS_KEY:-latest}
+      - VAULT_S3_SECRET_KEY=${VAULT_S3_SECRET_KEY:-latest}
+      - VAULT_S3_PRESIGNED_URL_EXPIRE_SECONDS=${VAULT_S3_PRESIGNED_URL_EXPIRE_SECONDS:-900}
+      - VAULT_S3_MULTIPART_THRESHOLD_MB=${VAULT_S3_MULTIPART_THRESHOLD_MB:-50}
+      - VAULT_S3_LIFECYCLE_EXPIRATION_DAYS=${VAULT_S3_LIFECYCLE_EXPIRATION_DAYS:-0}
+      - VAULT_S3_LIFECYCLE_TRANSITION_DAYS=${VAULT_S3_LIFECYCLE_TRANSITION_DAYS:-0}
+      - VAULT_S3_TRANSITION_STORAGE_CLASS=${VAULT_S3_TRANSITION_STORAGE_CLASS:-STANDARD_IA}
+      - VAULT_API_KEY=${VAULT_API_KEY:-changeme}
+      - VAULT_JWT_SECRET=${VAULT_JWT_SECRET:-changeme_jwt_secret_please_change}
+      - VAULT_JWT_ALGORITHM=${VAULT_JWT_ALGORITHM:-HS256}
+      - VAULT_ACCESS_TOKEN_EXPIRE_MINUTES=${VAULT_ACCESS_TOKEN_EXPIRE_MINUTES:-60}
+      - VAULT_MAX_UPLOAD_MB=${VAULT_MAX_UPLOAD_MB:-512}
+      - VAULT_LOG_LEVEL=${VAULT_LOG_LEVEL:-INFO}
+      - TZ=${TZ:-UTC}
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - "-fsS"
+        - http://localhost:8000/api/v1/health
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+  printstash-postgres:
+    image: postgres:16-alpine
+    container_name: printstash-postgres
+    restart: unless-stopped
+    volumes:
+      - ${APP_DATA_DIR}/data/printstash_postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-printstash}
+      - POSTGRES_USER=${POSTGRES_USER:-printstash}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-printstash}
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U ${POSTGRES_USER:-printstash} -d ${POSTGRES_DB:-printstash}
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+  printstash-minio:
+    image: minio/minio:latest
+    container_name: printstash-minio
+    restart: unless-stopped
+    volumes:
+      - ${APP_DATA_DIR}/data/printstash_minio:/data
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER:-minioadmin}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-minioadmin}
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - "-fsS"
+        - http://localhost:9000/minio/health/live
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+x-runtipi:
+  schema_version: 2
