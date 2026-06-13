@@ -1,0 +1,280 @@
+{
+  "$schema": "../app-info-schema.json",
+  "id": "printstash",
+  "name": "PrintStash",
+  "description": "Self-hosted asset management for 3D printing files, slicer metadata, and printer workflows.",
+  "version": "1.0.0",
+  "image": "frontend",
+  "port": 8101,
+  "categories": [
+    "utilities"
+  ],
+  "form_fields": [
+    {
+      "type": "fqdn",
+      "label": "NEXT PUBLIC API URL",
+      "env_variable": "NEXT_PUBLIC_API_URL",
+      "default": "http://api:8000",
+      "required": false
+    },
+    {
+      "type": "fqdn",
+      "label": "NEXT PUBLIC WS URL",
+      "env_variable": "NEXT_PUBLIC_WS_URL",
+      "default": "ws://localhost:8000",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT STORAGE BACKEND",
+      "env_variable": "VAULT_STORAGE_BACKEND",
+      "default": "local",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT DATA DIR",
+      "env_variable": "VAULT_DATA_DIR",
+      "default": "/data/files",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT THUMB DIR",
+      "env_variable": "VAULT_THUMB_DIR",
+      "default": "/data/thumbs",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT STAGING DIR",
+      "env_variable": "VAULT_STAGING_DIR",
+      "default": "/data/staging",
+      "required": false
+    },
+    {
+      "type": "fqdn",
+      "label": "VAULT DB URL",
+      "env_variable": "VAULT_DB_URL",
+      "default": "sqlite:////data/db/printstash.sqlite",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT BACKUP DIR",
+      "env_variable": "VAULT_BACKUP_DIR",
+      "default": "/data/backups",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT BACKUP RETENTION DAYS",
+      "env_variable": "VAULT_BACKUP_RETENTION_DAYS",
+      "default": "30",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT BACKUP S3 BUCKET",
+      "env_variable": "VAULT_BACKUP_S3_BUCKET",
+      "default": "latest",
+      "required": false
+    },
+    {
+      "type": "fqdn",
+      "label": "VAULT BACKUP S3 ENDPOINT URL",
+      "env_variable": "VAULT_BACKUP_S3_ENDPOINT_URL",
+      "default": "latest",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT BACKUP S3 REGION",
+      "env_variable": "VAULT_BACKUP_S3_REGION",
+      "default": "auto",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT BACKUP S3 ACCESS KEY",
+      "env_variable": "VAULT_BACKUP_S3_ACCESS_KEY",
+      "default": "latest",
+      "required": false
+    },
+    {
+      "type": "password",
+      "label": "VAULT BACKUP S3 SECRET KEY",
+      "env_variable": "VAULT_BACKUP_S3_SECRET_KEY",
+      "default": "latest",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT S3 BUCKET",
+      "env_variable": "VAULT_S3_BUCKET",
+      "default": "latest",
+      "required": false
+    },
+    {
+      "type": "fqdn",
+      "label": "VAULT S3 ENDPOINT URL",
+      "env_variable": "VAULT_S3_ENDPOINT_URL",
+      "default": "latest",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT S3 REGION",
+      "env_variable": "VAULT_S3_REGION",
+      "default": "auto",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT S3 ACCESS KEY",
+      "env_variable": "VAULT_S3_ACCESS_KEY",
+      "default": "latest",
+      "required": false
+    },
+    {
+      "type": "password",
+      "label": "VAULT S3 SECRET KEY",
+      "env_variable": "VAULT_S3_SECRET_KEY",
+      "default": "latest",
+      "required": false
+    },
+    {
+      "type": "fqdn",
+      "label": "VAULT S3 PRESIGNED URL EXPIRE SECONDS",
+      "env_variable": "VAULT_S3_PRESIGNED_URL_EXPIRE_SECONDS",
+      "default": "900",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT S3 MULTIPART THRESHOLD MB",
+      "env_variable": "VAULT_S3_MULTIPART_THRESHOLD_MB",
+      "default": "50",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT S3 LIFECYCLE EXPIRATION DAYS",
+      "env_variable": "VAULT_S3_LIFECYCLE_EXPIRATION_DAYS",
+      "default": "0",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT S3 LIFECYCLE TRANSITION DAYS",
+      "env_variable": "VAULT_S3_LIFECYCLE_TRANSITION_DAYS",
+      "default": "0",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT S3 TRANSITION STORAGE CLASS",
+      "env_variable": "VAULT_S3_TRANSITION_STORAGE_CLASS",
+      "default": "STANDARD_IA",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT API KEY",
+      "env_variable": "VAULT_API_KEY",
+      "default": "changeme",
+      "required": false
+    },
+    {
+      "type": "password",
+      "label": "VAULT JWT SECRET",
+      "env_variable": "VAULT_JWT_SECRET",
+      "default": "changeme_jwt_secret_please_change",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT JWT ALGORITHM",
+      "env_variable": "VAULT_JWT_ALGORITHM",
+      "default": "HS256",
+      "required": false
+    },
+    {
+      "type": "password",
+      "label": "VAULT ACCESS TOKEN EXPIRE MINUTES",
+      "env_variable": "VAULT_ACCESS_TOKEN_EXPIRE_MINUTES",
+      "default": "60",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT MAX UPLOAD MB",
+      "env_variable": "VAULT_MAX_UPLOAD_MB",
+      "default": "512",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "VAULT LOG LEVEL",
+      "env_variable": "VAULT_LOG_LEVEL",
+      "default": "INFO",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "TZ",
+      "env_variable": "TZ",
+      "default": "UTC",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "POSTGRES DB",
+      "env_variable": "POSTGRES_DB",
+      "default": "printstash",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "POSTGRES USER",
+      "env_variable": "POSTGRES_USER",
+      "default": "printstash",
+      "required": false
+    },
+    {
+      "type": "password",
+      "label": "POSTGRES PASSWORD",
+      "env_variable": "POSTGRES_PASSWORD",
+      "default": "printstash",
+      "required": false
+    },
+    {
+      "type": "text",
+      "label": "MINIO ROOT USER",
+      "env_variable": "MINIO_ROOT_USER",
+      "default": "minioadmin",
+      "required": false
+    },
+    {
+      "type": "password",
+      "label": "MINIO ROOT PASSWORD",
+      "env_variable": "MINIO_ROOT_PASSWORD",
+      "default": "minioadmin",
+      "required": false
+    }
+  ],
+  "supported_architectures": [
+    "arm64",
+    "amd64"
+  ],
+  "short_desc": "Self-hosted asset management for 3D printing files, slicer metadata, and printer workflows.",
+  "author": "xiao-villamor",
+  "source": "https://github.com/xiao-villamor/PrintStash",
+  "available": true,
+  "exposable": true,
+  "dynamic_config": true,
+  "tipi_version": 1,
+  "min_tipi_version": "4.5.0",
+  "created_at": 1781377650118,
+  "updated_at": 1781377650118
+}
