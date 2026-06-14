@@ -1,6 +1,6 @@
 services:
   freellmapi:
-    image: ghcr.io/tashfeenahmed/freellmapi:latest
+    image: ghcr.1ms.run/tashfeenahmed/freellmapi:latest
     container_name: freellmapi
     restart: unless-stopped
     volumes:
